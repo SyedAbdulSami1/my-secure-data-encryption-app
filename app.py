@@ -20,15 +20,15 @@ def encrypt_data(text, passkey):
 
 # Function to decrypt data
 def decrypt_data(encrypted_text, passkey):
-    global failed_attemps
-    hash_passkey = hash_passkey(passkey)
+    global failed_attempts
+    hashed_passkey = hash_passkey(passkey)
 
     for key, value in stored_data.items():
-        if value["encrypted_text"] == encrypted_text and value ["passkey"] == hash_passkey:
-            failed_attemps = 0
+        if value["encrypted_text"] == encrypted_text and value["passkey"] == hashed_passkey:
+            failed_attempts = 0
             return chiper.decrypt(encrypted_text.encode()).decode()
         
-    failed_attemps += 1 
+    failed_attempts += 1 
     return None
 
 # Streamlit UI
@@ -69,7 +69,7 @@ elif choice == "Retrieve Data":
             else:
                 st.error(f"❌ Incorrect passkey! Attempts remaining: {3 - failed_attempts}")
 
-                if failed_attemps > 3:
+                if failed_attempts > 3:
                     st.warning("🔒 Too many failed attempts! Redirecting to Login Page.")
                     st.experimental_rerun()
         else:
@@ -81,7 +81,7 @@ elif choice == "Login":
     if st.button("Login"):
         if login_pass == "sami123":
             global failed_attempts
-            failed_attemps = 0
+            failed_attempts = 0
             st.success("✅ Reauthorized successfully! Redirecting to Retrieve Data...")
             st.experimental_rerun()
         else:
